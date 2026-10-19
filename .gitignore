@@ -1,0 +1,56 @@
+# CMake 生成目录与缓存
+build/
+cmake-build-*/
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+install_manifest.txt
+CTestTestfile.cmake
+CMakeUserPresets.json
+compile_commands.json
+_deps/
+
+# Visual Studio
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.vcxproj
+*.vcxproj.filters
+*.vcxproj.user
+*.sln
+*.VC.db
+*.VC.opendb
+*.sdf
+*.opensdf
+*.opendb
+ipch/
+*.ipch
+
+# 编译与链接产物
+*.obj
+*.o
+*.exe
+*.pdb
+*.ilk
+*.idb
+*.lib
+*.dll
+*.exp
+*.tlog
+*.recipe
+*.lastbuildstate
+*.log
+
+# 光线追踪输出图像
+*.ppm
+
+# 本地编辑器配置（含本机绝对路径）
+.vscode/
+
+# 操作系统杂项
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+.DS_Store
