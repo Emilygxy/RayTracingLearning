@@ -38,6 +38,8 @@ target_include_directories(TinyRayTracer
         ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
+target_compile_features(TinyRayTracer PUBLIC cxx_std_17)
+
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
 set_target_properties(TinyRayTracer
