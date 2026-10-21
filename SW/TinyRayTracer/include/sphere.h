@@ -9,10 +9,14 @@ public:
 	sphere() = default;
 	~sphere() = default;
 
-	sphere(const point3& center, float radius) : center(center), radius(float(std::fmax(0, radius))) {}
+	sphere(const point3& center, float radius, std::shared_ptr<material> mat)
+		: center(center), radius(std::fmax(0.0f, radius)), mat(mat) {
+	}
+
 	bool hit(const ray& r, interval ray_t, hit_record& rec) const override;
 
 private:
 	point3 center;
 	float radius;
+	std::shared_ptr<material> mat;
 };

@@ -1,4 +1,5 @@
 #include "camera.h"
+#include "material.h"
 
 void camera::render(const hittable& world)
 {
@@ -25,22 +26,22 @@ void camera::initialize()
 {
     image_height = int(image_width / aspect_ratio);
     image_height = (image_height < 1) ? 1 : image_height;
-    pixel_samples_scale = 1.0 / samples_per_pixel;
+    pixel_samples_scale = 1.0f / samples_per_pixel;
 
     center = point3(0, 0, 0);
 
     // Determine viewport dimensions.
     auto focal_length = 1.0f;
     auto viewport_height = 2.0f;
-    auto viewport_width = viewport_height * (double(image_width) / image_height);
+    auto viewport_width = viewport_height * (float(image_width) / image_height);
 
     // Calculate the vectors across the horizontal and down the vertical viewport edges.
     auto viewport_u = vec3(viewport_width, 0, 0);
     auto viewport_v = vec3(0, -viewport_height, 0);
 
     // Calculate the horizontal and vertical delta vectors from pixel to pixel.
-    pixel_delta_u = viewport_u / image_width;
-    pixel_delta_v = viewport_v / image_height;
+    pixel_delta_u = viewport_u / float(image_width);
+    pixel_delta_v = viewport_v / float(image_height);
 
     // Calculate the location of the upper left pixel.
     auto viewport_upper_left =
@@ -55,9 +56,12 @@ color camera::ray_color(const ray& r, int depth, const hittable& world) const {
 
     hit_record rec;
 
-    if (world.hit(r, interval(0.001, infinity), rec)) {
-        vec3 direction = random_on_hemisphere(rec.normal);
-        return 0.1 * ray_color(ray(rec.p, direction), depth - 1, world);
+    if (world.hit(r, interval(0.001f, infinity), rec)) {
+        ray scattered;
+        color attenuation;
+        if (rec.mat->scatter(r, rec, attenuation, scattered))
+            return attenuation * ray_color(scattered, depth - 1, world);
+        return color(0, 0, 0);
     }
 
     vec3 unit_direction = unit_vector(r.direction());

@@ -2,9 +2,19 @@
 
 #include <cmath>
 #include <iostream>
+#include <random>
 
-float random_float();
-float random_float(float min, float max);
+inline float random_float() {
+    // Returns a random real in [0,1).
+    static std::uniform_real_distribution<float> distribution(0.0f, 1.0f);
+    static std::mt19937 generator;
+    return distribution(generator);
+}
+
+inline float random_float(float min, float max) {
+    // Returns a random real in [min,max).
+    return min + (max - min) * random_float();
+}
 
 class vec3 {
 public:
@@ -47,6 +57,12 @@ public:
         return e[0] * e[0] + e[1] * e[1] + e[2] * e[2];
     }
 
+    bool near_zero() const {
+        // Return true if the vector is close to zero in all dimensions.
+        auto s = 1e-8;
+        return (std::fabs(e[0]) < s) && (std::fabs(e[1]) < s) && (std::fabs(e[2]) < s);
+    }
+
     static vec3 random() {
         return vec3(random_float(), random_float(), random_float());
     }
@@ -58,6 +74,8 @@ public:
 
 // point3 is just an alias for vec3, but useful for geometric clarity in the code.
 using point3 = vec3;
+// color is just an alias for vec3, but useful for color clarity in the code.
+using color = vec3;
 
 // Vector Utility Functions
 
@@ -120,4 +138,8 @@ inline vec3 random_on_hemisphere(const vec3& normal) {
         return on_unit_sphere;
     else
         return -on_unit_sphere;
+}
+
+inline vec3 reflect(const vec3& v, const vec3& n) {
+    return v - 2 * dot(v, n) * n;
 }

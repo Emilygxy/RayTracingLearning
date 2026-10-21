@@ -1,0 +1,34 @@
+#pragma once
+#include "hittable.h"
+
+class material
+{
+public:
+    material() = default;
+    virtual ~material() = default;
+
+    virtual bool scatter(const ray& r_in, const hit_record& rec, color& attenuation, ray& scattered) const;
+
+private:
+
+};
+
+class lambertian : public material {
+public:
+    lambertian(const color& albedo) : albedo(albedo) {}
+
+    bool scatter(const ray& r_in, const hit_record& rec, color& attenuation, ray& scattered) const override;
+
+private:
+    color albedo;
+};
+
+class metal : public material {
+public:
+    metal(const color& albedo) : albedo(albedo) {}
+
+    bool scatter(const ray& r_in, const hit_record& rec, color& attenuation, ray& scattered) const override;
+
+private:
+    color albedo;
+};

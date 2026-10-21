@@ -474,17 +474,25 @@ int main() {
 #include "hittable.h"
 #include "hittable_list.h"
 #include "sphere.h"
+#include "material.h"
 
 int main() {
     hittable_list world;
 
-    world.add(make_shared<sphere>(point3(0, 0, -1), 0.5));
-    world.add(make_shared<sphere>(point3(0, -100.5, -1), 100));
+    auto material_ground = make_shared<lambertian>(color(0.8f, 0.8f, 0.0f));
+    auto material_center = make_shared<lambertian>(color(0.1f, 0.2f, 0.5f));
+    auto material_left = make_shared<metal>(color(0.8f, 0.8f, 0.8f));
+    auto material_right = make_shared<metal>(color(0.8f, 0.6f, 0.2f));
+
+    world.add(make_shared<sphere>(point3(0.0f, -100.5f, -1.0f), 100.0f, material_ground));
+    world.add(make_shared<sphere>(point3(0.0f, 0.0f, -1.2), 0.5f, material_center));
+    world.add(make_shared<sphere>(point3(-1.0f, 0.0f, -1.0f), 0.5f, material_left));
+    world.add(make_shared<sphere>(point3(1.0f, 0.0f, -1.0f), 0.5f, material_right));
 
     camera cam;
 
-    cam.aspect_ratio = 16.0 / 9.0;
-    cam.image_width = 400;
+    cam.aspect_ratio = 16.0f / 9.0f;
+    cam.image_width = 800;
     cam.samples_per_pixel = 100;
     cam.max_depth = 50;
 
